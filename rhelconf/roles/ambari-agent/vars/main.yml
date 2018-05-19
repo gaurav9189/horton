@@ -1,0 +1,3 @@
+---
+# vars file for ambari-agent
+agent: ambari-agent

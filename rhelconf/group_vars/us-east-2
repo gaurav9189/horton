@@ -1,0 +1,4 @@
+---
+# vars file for horton
+as: ambari-server
+agent: ambari-agent

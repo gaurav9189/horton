@@ -1,0 +1,16 @@
+- name: checking ansible vars
+  hosts: 'us-east-2[0]'
+  remote_user: ec2-user
+  become: true
+  tasks:
+  - name: using debug
+    debug:
+     msg: " i am '{{ hostvars[groups['us-east-2'][0]]['ansible_eth0']['ipv4']['address'] }} {{ ansible_nodename }}' "
+  - copy:
+     content: "i am {{ hostvars[groups['us-east-2'][0]]['ansible_eth0']['ipv4']['address'] }} {{ ansible_nodename }} "
+     dest: /tmp/file
+  - lineinfile:
+      path: /etc/ambari-agent/conf/ambari-agent.ini
+      regexp: '^hostname='
+      line: hostname="{{ hostvars[groups['us-east-2'][0]]['ansible_eth0']['ipv4']['address'] }}"
+      #line: 'hostname=apple'

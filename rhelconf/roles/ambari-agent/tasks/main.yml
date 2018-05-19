@@ -1,0 +1,15 @@
+---
+# tasks file for ambari-agent
+  - name: installing ambari-agent
+    yum: name="{{ agent }}" state=installed
+  - name: checking the variable for agent
+    debug:
+     msg: agent name is "{{ agent }}"
+  - name: setting up ambari agent with server registration
+    lineinfile:
+      path: /etc/ambari-agent/conf/ambari-agent.ini
+      regexp: '^hostname='
+      line: hostname={{ hostvars[groups['us-east-2'][0]]['ansible_nodename'] }}
+     # line: hostname="{{ hostvars[groups['us-east-2'][0]]['ansible_eth0']['ipv4']['address'] }}"
+  - name: start the ambari agent
+    service: name={{ agent }} state=started

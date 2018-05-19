@@ -1,0 +1,20 @@
+- name: Doing common config for all
+  hosts: 'us-east-2'
+  become: true
+  remote_user: ec2-user
+  roles:
+   - common
+
+- name: Setting up ambari server
+  hosts: 'us-east-2[0]'
+  become: true
+  remote_user: ec2-user
+  roles:
+   - ambari-server
+
+- name: Doing ambari-agent config for all
+  hosts: 'us-east-2'
+  become: true
+  remote_user: ec2-user
+  roles:
+   - ambari-agent

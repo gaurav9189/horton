@@ -1,0 +1,14 @@
+- name: testing
+  hosts: 'us-east-2'
+  become: true
+  remote_user: ec2-user
+  tasks:
+   - name: testing loop
+  #   lineinfile: dest=/tmp/hosts line={{ hostvars["{{ item }}"]['ansible_eth0']['ipv4']['address'] }}   {{ hostvars["{{ item }}"]['ansible_hostname'] }}
+
+    # lineinfile: dest=/tmp/hosts line={{ hostvars["{{ item }}"]['ansible_eth0']['ipv4']['address'] }}
+    # with_items: 
+    #  - groups['us-east-2']
+    # delegate_to: localhost
+     lineinfile: dest=/etc/hosts line=" {{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}  {{ hostvars[item]['ansible_nodename'] }} "
+     with_items: "{{ groups['us-east-2'] }}"

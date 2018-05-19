@@ -1,0 +1,8 @@
+- name: testing
+  hosts: 'us-east-2'
+  become: true
+  remote_user: ec2-user
+  tasks:
+  - debug:
+     msg: "{{ item }}"
+    loop: "{{ groups['us-east-2'] }}"
