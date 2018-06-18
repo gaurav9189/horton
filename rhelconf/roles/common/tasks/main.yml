@@ -2,17 +2,22 @@
 #common tasks
   - name: installing package
     yum: name=wget state=installed
-  - name: installing repo
-    shell: "cd /etc/yum.repos.d/; wget http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.5.2.0/ambari.repo ; wget http://public-repo-1.hortonworks.com/HDP/centos7/2.x/updates/2.5.3.0/hdp.repo"
+  - name: using get_url installing repo
+    get_url:
+     url: "{{ item }}"
+     dest: /etc/zypp/repos.d/
+    with_items:
+    - http://public-repo-1.hortonworks.com/ambari/sles12/2.x/updates/2.6.2.0/ambari.repo
+    - http://public-repo-1.hortonworks.com/HDP/sles12/2.x/updates/2.6.5.0/hdp.repo
   - name: transparent huge pages
-    shell: "echo never > /sys/kernel/mm/redhat_transparent_hugepage/enabled; echo never > /sys/kernel/mm/redhat_transparent_hugepage/defrag; echo 1 > /proc/sys/vm/swappiness"
+    shell: "echo never > /sys/kernel/mm/transparent_hugepage/enabled; echo never > /sys/kernel/mm/transparent_hugepage/defrag; echo 1 > /proc/sys/vm/swappiness"
     args:
      executable: /bin/bash
-  - name: disabling selinux
-    lineinfile:
-     path: /etc/selinux/config
-     regexp: '^SELINUX='
-     line: 'SELINUX=disabled'
+#  - name: disabling selinux
+#    lineinfile:
+#     path: /etc/selinux/config
+#     regexp: '^SELINUX='
+#     line: 'SELINUX=disabled'
   - name: Updating the /etc/hosts file for hosts
     lineinfile: dest=/etc/hosts line=" {{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}  {{ hostvars[item]['ansible_nodename'] }} "
     with_items: "{{ groups['us-east-2'] }}"

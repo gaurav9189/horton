@@ -4,7 +4,7 @@
     debug:
      msg: 'name of the var is {{ as }}'
   - name: installing ambari-server
-    yum: name="{{ as }}" state=installed
+    zypper: name="{{ as }}" state=installed
   - name: setting up ambari server
     shell: "ambari-server setup -s" 
     args: 

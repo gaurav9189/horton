@@ -1,7 +1,7 @@
 ---
 # tasks file for ambari-agent
   - name: installing ambari-agent
-    yum: name="{{ agent }}" state=installed
+    zypper: name="{{ agent }}" state=installed
   - name: checking the variable for agent
     debug:
      msg: agent name is "{{ agent }}"
